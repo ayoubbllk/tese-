@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Act Wood — Menuiserie d'art sur mesure, Alger</title>
+<meta name="description" content="Act Wood conçoit, fabrique et pose des portes, agencements et meubles en bois massif, sur mesure, pour l'hôtellerie 5★, les résidences de standing et les particuliers exigeants. Atelier à Alger.">
+<meta name="theme-color" content="#f4f2ed">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231f4b85'/%3E%3Cpath d='M8 27V16.5A8 8 0 1 1 24 16.5V27' fill='none' stroke='%23f4f2ed' stroke-width='1.8'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Instrument+Sans:wght@400..700&family=Amiri&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>document.documentElement.classList.add('js');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion')</script>
+</head>
+<body>
+
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<header class="hd" id="hd">
+  <div class="wrap hd__in">
+    <a class="logo" href="#top" aria-label="Act Wood, accueil">
+      <svg viewBox="0 0 24 32" aria-hidden="true"><path d="M3.5 31V17A9 9 0 1 1 20.5 17V31" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+      <span>Act Wood</span>
+    </a>
+    <p class="hd__chapter" id="chapter" aria-hidden="true"><span id="chapter-num"></span><span id="chapter-name"></span></p>
+    <nav aria-label="Navigation principale">
+      <button class="hd__toggle" type="button" aria-expanded="false" aria-controls="nav-list">Menu</button>
+      <ul class="hd__nav" id="nav-list">
+        <li><a href="#atelier">L'atelier</a></li>
+        <li><a href="#savoir-faire">Savoir-faire</a></li>
+        <li><a href="#parcours">Méthode</a></li>
+        <li><a href="#realisations">Réalisations</a></li>
+        <li><a class="btn btn--sm" href="#contact">Parler de votre projet</a></li>
+      </ul>
+    </nav>
+  </div>
+  <span class="hd__progress" aria-hidden="true"><i id="progress"></i></span>
+</header>
+
+<main id="contenu">
+
+  <!-- ============ OUVERTURE : le bois brut ============ -->
+  <section class="scene scene--hero" id="top" data-scene="hero" aria-labelledby="hero-title">
+    <div class="scene__stage">
+      <div class="hero-media" id="hero-media">
+        <div class="hero-media__inner">
+          <img class="hero-media__poster" src="media/ouverture-debut.jpg" width="1920" height="1072" alt="Planche de bois brute sur l'établi, avant d'être sculptée en moucharabieh" fetchpriority="high">
+          <img class="hero-media__end" src="media/ouverture-fin.jpg" width="1200" height="670" loading="lazy" alt="Panneau de moucharabieh sculpté, rétroéclairé d'une lumière dorée">
+          <video class="hero-media__video" data-video="media/ouverture.mp4" muted playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
+        </div>
+        <div class="hero-media__veil" aria-hidden="true"></div>
+      </div>
+      <svg class="hero-ring" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polygon id="hero-ring" points="0,0" vector-effect="non-scaling-stroke"/></svg>
+      <p class="cap hero-cap" aria-hidden="true">Film d'ambiance · du bois brut au moucharabieh</p>
+
+      <div class="wrap hero-copy">
+        <p class="kicker">Menuiserie d'art sur mesure · Alger</p>
+        <h1 id="hero-title" class="hero-title">Votre envie,<br><em>façonnée<br>dans le bois.</em></h1>
+        <div class="hero-more">
+          <p class="hero-lead">Act Wood conçoit, fabrique et pose des portes, des agencements et du mobilier en bois massif — sur mesure, pour les hôtels 5★, les résidences de standing et les particuliers exigeants.</p>
+          <div class="hero-cta">
+            <a class="btn btn--fill" href="#contact">Parler de votre projet</a>
+            <a class="link" href="#realisations">Voir les réalisations</a>
+          </div>
+        </div>
+      </div>
+
+      <ol class="hero-steps" aria-hidden="true">
+        <li>Le bois brut</li>
+        <li>Le geste</li>
+        <li>L'ouvrage</li>
+      </ol>
+      <p class="hero-cue" aria-hidden="true"><span>Faites défiler</span><i></i></p>
+    </div>
+  </section>
+
+  <div class="tiles" data-slide aria-hidden="true"></div>
+
+  <!-- ============ I · L'ÉCOUTE ============ -->
+  <section class="split" id="atelier" data-side="left" aria-labelledby="atelier-title">
+    <div class="split__media">
+      <div class="film" id="film-ecoute" data-open data-scrub>
+        <div class="film__inner">
+          <div class="film__layer">
+            <img src="public/825281593_122276104166174344_6607890769787942150_n.jpg" data-start="media/metier-agencement-debut.jpg" width="1200" height="1500" loading="lazy" alt="Bibliothèque vitrée en chêne massif sur deux murs, étagères de verre et éclairage intégré">
+            <video data-video="media/metier-agencement.mp4" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+            <p class="film__cap">Bibliothèque vitrée en chêne massif — des planches à la pose</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="split__text">
+      <header class="ch__head reveal">
+        <p class="ch__num">I</p>
+        <p class="kicker">L'écoute</p>
+        <p class="ch__ar" lang="ar">الإصغاء</p>
+      </header>
+      <h2 id="atelier-title" class="statement reveal">Nous ne vendons pas de catalogue. Nous réalisons <em>vos envies</em> — et notre plus grand plaisir, c'est votre satisfaction le jour de la pose.</h2>
+      <p class="txt reveal">Act Wood est un atelier de menuiserie d'Alger. Chaque projet est suivi par la même équipe, du premier rendez-vous à la dernière finition : relevés sur place, dessin, choix des essences, fabrication, pose.</p>
+      <p class="txt reveal">Nous aimons ce qui nous entoure : les boiseries des immeubles d'<span class="nw">Alger-Centre</span>, les portes cloutées et les moucharabiehs de la Casbah, la géométrie kabyle. Nous les réinterprétons, sans les copier, pour des intérieurs d'aujourd'hui.</p>
+      <ol class="values">
+        <li class="reveal"><span class="num">I.</span><div><strong>Écouter</strong><p>Vos usages, votre lumière, vos contraintes — avant de dessiner.</p></div></li>
+        <li class="reveal" style="--d:.08s"><span class="num">II.</span><div><strong>Être juste</strong><p>Au millimètre, avec des assemblages faits pour durer.</p></div></li>
+        <li class="reveal" style="--d:.16s"><span class="num">III.</span><div><strong>Tenir parole</strong><p>Ce qui est dessiné ensemble est ce qui est posé chez vous.</p></div></li>
+      </ol>
+      <blockquote class="proverb reveal">
+        <p class="ar" lang="ar">الصنعة إلا ما غنات تستر</p>
+        <footer>« Le métier, s'il n'enrichit pas, protège. »</footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ============ II · SAVOIR-FAIRE — trois métiers, trois films côte à côte ============ -->
+  <section class="ch trades" id="savoir-faire" aria-labelledby="sf-title">
+    <div class="wrap">
+      <div class="trades__head">
+        <div>
+          <header class="ch__head reveal">
+            <p class="ch__num">II</p>
+            <p class="kicker">Savoir-faire</p>
+            <p class="ch__ar" lang="ar">الحرفة</p>
+          </header>
+          <h2 id="sf-title" class="h2 reveal">Trois métiers, <em>un même atelier.</em></h2>
+        </div>
+        <p class="txt reveal">Du dessin à la pose, chaque ouvrage est fabriqué dans notre atelier, en bois massif.</p>
+      </div>
+      <ul class="trades__list">
+        <li class="trade">
+          <div class="film film--trade" data-open data-scrub>
+            <div class="film__inner">
+              <div class="film__layer">
+                <img src="public/825281865_122276104730174344_798134851784821914_n.jpg" data-start="media/metier-porte-debut.jpg" width="1536" height="2048" loading="lazy" alt="Porte en bois massif à vitrage à petits bois, avec semi-fixe et chambranle large">
+                <video data-video="media/metier-porte.mp4" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+                <p class="film__cap">Porte vitrée à petits bois</p>
+              </div>
+            </div>
+          </div>
+          <p class="num">I.</p>
+          <h3>Portes</h3>
+          <p class="txt">Portes d'entrée, portes intérieures, portes palières d'hôtel. Panneaux moulurés, vitrages à petits bois, chambranles sur mesure.</p>
+        </li>
+        <li class="trade">
+          <div class="film film--trade" data-open data-scrub>
+            <div class="film__inner">
+              <div class="film__layer">
+                <img src="public/825281593_122276104166174344_6607890769787942150_n.jpg" data-start="media/metier-agencement-debut.jpg" width="1200" height="1500" loading="lazy" alt="Bibliothèque vitrée en chêne massif sur deux murs, étagères de verre et éclairage intégré">
+                <video data-video="media/metier-agencement.mp4" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+                <p class="film__cap">Bibliothèque vitrée en chêne</p>
+              </div>
+            </div>
+          </div>
+          <p class="num">II.</p>
+          <h3>Agencement</h3>
+          <p class="txt">Bibliothèques, dressings, vaisseliers, claustras, habillages muraux. Des rangements dessinés avec l'architecture du lieu.</p>
+        </li>
+        <li class="trade">
+          <div class="film film--trade" data-open data-scrub>
+            <div class="film__inner">
+              <div class="film__layer">
+                <img src="public/825281950_122276103542174344_154945990697371947_n.jpg" data-start="media/metier-mobilier-debut.jpg" width="1440" height="1800" loading="lazy" alt="Table ronde en bois massif sur piétement sculptural en étoile">
+                <video data-video="media/metier-mobilier.mp4" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+                <p class="film__cap">Table ronde, piétement en étoile</p>
+              </div>
+            </div>
+          </div>
+          <p class="num">III.</p>
+          <h3>Mobilier</h3>
+          <p class="txt">Tables, buffets, commodes, consoles, chevets. Des pièces uniques, dessinées pour un intérieur précis.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ III · MÉTHODE — un même buffet, du dessin à la pose ============ -->
+  <section class="scene scene--split" id="parcours" data-scene="parcours" data-side="left" aria-labelledby="parcours-title">
+    <div class="scene__stage">
+      <div class="film" data-open>
+        <div class="film__inner">
+          <div class="film__layer film__layer--photo">
+            <img class="pm__a" src="public/853759409_122279461766174344_2086827660799281428_n.jpg" width="1536" height="2048" loading="lazy" alt="Les façades en damier du buffet, à l'atelier, avant montage">
+            <img class="pm__b" src="public/855174143_122279461460174344_494252050795182905_n.jpg" width="720" height="960" loading="lazy" alt="Le buffet en damier terminé, posé chez le client sur son piétement en acier noir">
+            <video class="pm__video" data-video="media/atelier-pose.mp4" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+            <p class="film__cap pm__cap"><span>Les façades, à l'atelier</span><span>Posé chez le client</span></p>
+          </div>
+          <div class="film__layer film__layer--plan">
+            <svg viewBox="0 0 300 400" role="img" aria-label="Élévation dessinée du buffet : façades en damier sur piétement en acier">
+              <defs>
+                <pattern id="hv" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M2.5 0V5" stroke="#f4f2ed" stroke-width=".45" opacity=".5"/></pattern>
+                <pattern id="hh" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 2.5H5" stroke="#f4f2ed" stroke-width=".45" opacity=".5"/></pattern>
+              </defs>
+              <g class="plan-hatch">
+                <rect x="30" y="150" width="40" height="45" fill="url(#hv)"/><rect x="70" y="150" width="40" height="45" fill="url(#hh)"/><rect x="110" y="150" width="40" height="45" fill="url(#hv)"/><rect x="150" y="150" width="40" height="45" fill="url(#hh)"/><rect x="190" y="150" width="40" height="45" fill="url(#hv)"/><rect x="230" y="150" width="40" height="45" fill="url(#hh)"/>
+                <rect x="30" y="195" width="40" height="45" fill="url(#hh)"/><rect x="70" y="195" width="40" height="45" fill="url(#hv)"/><rect x="110" y="195" width="40" height="45" fill="url(#hh)"/><rect x="150" y="195" width="40" height="45" fill="url(#hv)"/><rect x="190" y="195" width="40" height="45" fill="url(#hh)"/><rect x="230" y="195" width="40" height="45" fill="url(#hv)"/>
+              </g>
+              <g class="plan-lines" fill="none" stroke="#f4f2ed" stroke-width="1" stroke-linecap="round">
+                <path pathLength="1" d="M8 286H292" opacity=".5"/>
+                <path pathLength="1" d="M22 142H278V248H22Z"/>
+                <path pathLength="1" d="M30 150H270V240H30Z"/>
+                <path pathLength="1" d="M70 150V240M110 150V240M150 150V240M190 150V240M230 150V240M30 195H270" opacity=".85"/>
+                <path pathLength="1" d="M58 248L42 286H86M242 248L258 286H214"/>
+              </g>
+              <g class="plan-dims" fill="none" stroke="#bcd3ea" stroke-width=".8"><path d="M22 120H278M22 114v12M278 114v12"/></g>
+              <text class="plan-dims" x="150" y="108" text-anchor="middle" font-family="Instrument Sans, sans-serif" font-size="7.5" letter-spacing="1.4" fill="#bcd3ea">LONGUEUR SUR MESURE</text>
+              <g class="plan-dims" font-family="Instrument Sans, sans-serif" font-size="6.5" letter-spacing="1.2" fill="#bcd3ea">
+                <path d="M22 334H278M22 372H278M180 334V372" fill="none" stroke="#bcd3ea" stroke-width=".6"/>
+                <text x="30" y="350">ACT WOOD — ATELIER</text>
+                <text x="30" y="362">BUFFET EN DAMIER</text>
+                <text x="190" y="350">ÉLÉVATION</text>
+                <text x="190" y="362">BOIS MASSIF</text>
+              </g>
+            </svg>
+            <p class="film__cap">Le plan, tiré en bleu</p>
+          </div>
+        </div>
+      </div>
+      <div class="ftext">
+        <header class="ch__head">
+          <p class="ch__num">III</p>
+          <p class="kicker">Méthode</p>
+          <p class="ch__ar" lang="ar">الطريقة</p>
+        </header>
+        <h2 id="parcours-title" class="h2">De la conception <em>à la réalité.</em></h2>
+        <p class="txt ftext__lead">Tout commence par une rencontre, chez vous ou à l'atelier. Ensuite, un même buffet, suivi du dessin jusqu'à la pose :</p>
+        <ol class="fsteps">
+          <li class="fstep"><span class="num">I.</span><div><b>Le dessin</b><p>Relevés, plans, essences et finitions validés avec vous.</p></div></li>
+          <li class="fstep"><span class="num">II.</span><div><b>L'atelier</b><p>Débit, assemblage, ponçage, teinte — à la main, dans notre atelier.</p></div></li>
+          <li class="fstep"><span class="num">III.</span><div><b>La pose</b><p>Installation, réglages, nettoyage. Nous partons quand vous êtes satisfait.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Patrimoine — la cuisine, en grand ============ -->
+  <section class="scene scene--band" id="patrimoine" data-scene="band" aria-label="Patrimoine">
+    <div class="scene__stage">
+      <div class="film film--full" data-open>
+        <div class="film__inner">
+          <div class="film__layer">
+            <img src="media/cuisine-debut.jpg" width="1280" height="720" loading="lazy" alt="Cuisine aux façades de bois sculpté, carreaux de zellige vert, îlot en marbre vert habillé de carreaux peints">
+            <video class="band__video" data-video="media/cuisine.mp4" muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+          </div>
+        </div>
+      </div>
+      <div class="band__shade" aria-hidden="true"></div>
+      <div class="wrap band__in">
+        <p class="kicker">Patrimoine</p>
+        <p class="band__quote">Les boiseries d'<span class="nw">Alger-Centre</span>, les portes de la Casbah, la géométrie kabyle — <em>réinterprétées pour les intérieurs d'aujourd'hui.</em></p>
+        <p class="cap">Film d'ambiance · cuisine au zellige</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ IV · RÉALISATIONS — carrousel courbe (la grille reste pour les lecteurs d'écran et sans animation) ============ -->
+  <section class="ch works" id="realisations" aria-labelledby="real-title">
+    <div class="wrap">
+      <div class="works-head">
+        <div>
+          <header class="ch__head reveal">
+            <p class="ch__num">IV</p>
+            <p class="kicker">Réalisations</p>
+            <p class="ch__ar" lang="ar">أعمالنا</p>
+          </header>
+          <h2 id="real-title" class="h2 reveal">Quelques ouvrages, <em>posés chez nos clients.</em></h2>
+        </div>
+        <p class="txt reveal"><span class="h-static">Cliquez sur une photo pour l'agrandir.</span><span class="h-motion">Faites glisser les photos pour parcourir les ouvrages, et ouvrez-en une pour l'agrandir.</span></p>
+      </div>
+    </div>
+    <div class="curve reveal" id="curve" tabindex="0" role="group" aria-roledescription="carrousel" aria-label="Réalisations. Flèches gauche et droite pour parcourir, Entrée pour agrandir.">
+      <canvas aria-hidden="true"></canvas>
+    </div>
+    <div class="wrap">
+      <div class="curve__bar">
+        <p class="curve__n" aria-hidden="true">01 / 08</p>
+        <p class="curve__cap"><b>Vaisselier &amp; cache-radiateur</b><i>Chêne massif · acier noir</i></p>
+        <div class="curve__nav">
+          <button type="button" data-dir="-1" aria-label="Ouvrage précédent"><svg viewBox="0 0 18 12" aria-hidden="true"><path d="M18 6H2M7 1L2 6l5 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+          <button type="button" data-dir="1" aria-label="Ouvrage suivant"><svg viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+        </div>
+      </div>
+      <div class="works-grid">
+        <div class="works-row works-row--a">
+          <button type="button" class="work reveal"><span class="work__img"><img src="public/825281700_122276104016174344_1306448835613051549_n.jpg" width="1440" height="1800" loading="lazy" alt="Vaisselier en chêne, vitrine à cadre acier noir sur cache-radiateur à lames verticales"></span><span class="work__cap"><b>Vaisselier &amp; cache-radiateur</b><i>Chêne massif · acier noir</i></span></button>
+          <button type="button" class="work reveal" style="--d:.1s"><span class="work__img"><img src="public/825281593_122276104166174344_6607890769787942150_n.jpg" width="1200" height="1500" loading="lazy" alt="Bibliothèque vitrée en chêne massif, étagères de verre éclairées"></span><span class="work__cap"><b>Bibliothèque vitrée</b><i>Chêne massif · verre · éclairage intégré</i></span></button>
+        </div>
+        <div class="works-row works-row--b">
+          <button type="button" class="work reveal"><span class="work__img"><img src="public/825281497_122276104688174344_2855393098319513181_n.jpg" width="1536" height="2048" loading="lazy" alt="Porte intérieure à trois panneaux moulurés, teinte noyer, chambranle large"></span><span class="work__cap"><b>Porte à panneaux</b><i>Bois massif · teinte noyer</i></span></button>
+          <button type="button" class="work reveal" style="--d:.1s"><span class="work__img"><img src="public/825281629_122276103632174344_4257304306027447865_n.jpg" width="1080" height="1080" loading="lazy" alt="Long meuble bas en bois massif à trois façades coulissantes à claustra"></span><span class="work__cap"><b>Meuble bas à claustra</b><i>Plateau massif · façades coulissantes</i></span></button>
+          <button type="button" class="work reveal" style="--d:.2s"><span class="work__img"><img src="public/825281726_122276104592174344_1763719221979172686_n.jpg" width="1080" height="1440" loading="lazy" alt="Claustra d'entrée à lames verticales avec colonne de rangement et coffres bas"></span><span class="work__cap"><b>Claustra d'entrée</b><i>Lames verticales · rangements</i></span></button>
+        </div>
+        <div class="works-row works-row--c">
+          <button type="button" class="work reveal"><span class="work__img"><img src="public/825281799_122276103584174344_119630999537333609_n.jpg" width="1080" height="1080" loading="lazy" alt="Commode en bois massif, quatre tiroirs centraux encadrés de portes à lames horizontales"></span><span class="work__cap"><b>Commode à lames</b><i>Bois massif</i></span></button>
+          <button type="button" class="work reveal" style="--d:.1s"><span class="work__img"><img src="public/825281827_122276103674174344_1684877868919823938_n.jpg" width="600" height="600" loading="lazy" alt="Console longue en bois massif derrière un canapé, plateau bas à lattes"></span><span class="work__cap"><b>Console dos de canapé</b><i>Bois massif · plateau à lattes</i></span></button>
+          <button type="button" class="work reveal" style="--d:.2s"><span class="work__img"><img src="public/825281784_122276103974174344_4740908879153623341_n.jpg" width="613" height="810" loading="lazy" alt="Chevets à trois tiroirs laqués vert, plateau et pieds en bois verni"></span><span class="work__cap"><b>Chevets</b><i>Laque verte · plateau bois</i></span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ V · CHEZ VOUS ============ -->
+  <section class="split split--night" id="pour-qui" data-side="right" aria-labelledby="clients-title">
+    <div class="split__media">
+      <div class="film" data-open>
+        <div class="film__inner">
+          <div class="film__layer">
+            <img src="media/lanternes-debut.jpg" width="834" height="1112" loading="lazy" alt="Banquette aux panneaux de bois ajourés sous trois arcs sculptés, éclairée par des lanternes">
+            <video data-video="media/lanternes.mp4" muted playsinline loop preload="none" aria-hidden="true" tabindex="-1"></video>
+            <p class="film__cap">Film d'ambiance · salon aux lanternes</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="split__text">
+      <header class="ch__head reveal">
+        <p class="ch__num">V</p>
+        <p class="kicker">Chez vous</p>
+        <p class="ch__ar" lang="ar">في بيتكم</p>
+      </header>
+      <h2 id="clients-title" class="h2 reveal">Des lieux <em>qui reçoivent.</em></h2>
+      <ul class="clients">
+        <li class="reveal"><h3>Hôtellerie 5★</h3><p class="txt">Chambres, suites, réceptions, portes palières, habillages muraux — en série, dans les délais du chantier.</p></li>
+        <li class="reveal" style="--d:.06s"><h3>Résidences de standing</h3><p class="txt">Portes, dressings, cuisines et parties communes, avec une cohérence d'ensemble.</p></li>
+        <li class="reveal" style="--d:.12s"><h3>Particuliers</h3><p class="txt">La pièce unique : la bibliothèque d'une vie, la table de famille, le buffet qui passera aux enfants.</p></li>
+        <li class="reveal" style="--d:.18s"><h3>Architectes &amp; décorateurs</h3><p class="txt">Nous réalisons vos plans et vous conseillons sur les essences et la faisabilité.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ch ch--contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap contact">
+      <div class="contact__intro">
+        <header class="ch__head reveal">
+          <p class="ch__num">VI</p>
+          <p class="kicker">Contact</p>
+          <p class="ch__ar" lang="ar">اتصل بنا</p>
+        </header>
+        <h2 id="contact-title" class="h2 reveal">Parlons de <em>votre projet.</em></h2>
+        <p class="txt lead reveal">Décrivez-nous votre envie. Nous vous répondons personnellement, et nous passons volontiers vous voir sur place.</p>
+        <dl class="coords reveal">
+          <div><dt>Atelier</dt><dd>Alger, Algérie</dd></div>
+          <div><dt>Téléphone</dt><dd><a href="tel:+213000000000">+213 (0) 00 00 00 00</a></dd></div>
+          <div><dt>E-mail</dt><dd><a href="mailto:contact@actwood.dz">contact@actwood.dz</a></dd></div>
+          <div><dt>Horaires</dt><dd>Dimanche – jeudi, sur rendez-vous</dd></div>
+        </dl>
+      </div>
+
+      <form class="form reveal" id="form" novalidate>
+        <div class="field">
+          <label for="f-nom">Nom</label>
+          <input id="f-nom" name="nom" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="f-contact">Téléphone ou e-mail</label>
+          <input id="f-contact" name="contact" type="text" autocomplete="email" required>
+        </div>
+        <div class="field field--full">
+          <label for="f-type">Type de projet</label>
+          <select id="f-type" name="type" required>
+            <option value="">Choisir…</option>
+            <option>Hôtel</option>
+            <option>Résidence</option>
+            <option>Maison ou appartement</option>
+            <option>Projet d'architecte</option>
+          </select>
+        </div>
+        <div class="field field--full">
+          <label for="f-msg">Votre envie</label>
+          <textarea id="f-msg" name="message" rows="5" required placeholder="Ex. : des portes en noyer pour 12 chambres, une bibliothèque du sol au plafond…"></textarea>
+        </div>
+        <div class="form__foot field--full">
+          <button class="btn btn--fill" type="submit">Envoyer</button>
+          <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="ft">
+  <div class="tiles" data-slide="-1" aria-hidden="true"></div>
+  <div class="wrap ft__in">
+    <a class="ft__brand" href="#top">Act Wood</a>
+    <ul class="ft__nav">
+      <li><a href="#atelier">L'atelier</a></li>
+      <li><a href="#savoir-faire">Savoir-faire</a></li>
+      <li><a href="#parcours">Méthode</a></li>
+      <li><a href="#realisations">Réalisations</a></li>
+      <li><a href="#pour-qui">Chez vous</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <p class="ft__note">Menuiserie d'art sur mesure —<br>du bois brut à la pose.<br>Alger · 36°45′N 3°03′E</p>
+    <p class="ft__small">© <span id="year">2026</span> Act Wood · <span lang="ar" class="ar">صحّة</span> · <span lang="ber-Tfng">ⵜⴰⵏⵎⵉⵔⵜ</span> · Merci</p>
+  </div>
+</footer>
+
+<dialog class="viewer" id="viewer" aria-label="Agrandissement">
+  <button type="button" class="viewer__close" aria-label="Fermer">×</button>
+  <button type="button" class="viewer__nav" data-dir="-1" aria-label="Précédent">←</button>
+  <figure><img id="viewer-img" alt=""><figcaption id="viewer-cap"></figcaption></figure>
+  <button type="button" class="viewer__nav" data-dir="1" aria-label="Suivant">→</button>
+</dialog>
+
+<script src="assets/main.js" defer></script>
+</body>
+</html>
