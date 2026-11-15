@@ -56,28 +56,33 @@
   const heroVideo = $('.hero__video');
   if (heroVideo && heroVideo._item) heroVideo._item.load();
 
-  /* ---------- Ouverture du site : le rideau se lève quand tout est prêt ---------- */
+  // grand écran : le fond reprend les couleurs de l'image du film, très floutées (40 px agrandis)
+  const amb = $('.hero__amb');
+  const ambCtx = amb && amb.getContext('2d');
+  let ambQueued = false;
+  const drawAmb = () => {
+    ambQueued = false;
+    if (!ambCtx || innerWidth <= 760) return;
+    const src = heroVideo && heroVideo._item && heroVideo._item.ready ? heroVideo : $('.hero__poster');
+    try { ambCtx.drawImage(src, 0, 0, amb.width, amb.height); } catch (_) { /* image pas encore prête */ }
+  };
+  const queueAmb = () => { if (!ambQueued) { ambQueued = true; requestAnimationFrame(drawAmb); } };
+  if (ambCtx) {
+    const poster = $('.hero__poster');
+    if (poster.complete) queueAmb(); else poster.addEventListener('load', queueAmb, { once: true });
+    if (heroVideo) ['loadeddata', 'seeked'].forEach((ev) => heroVideo.addEventListener(ev, queueAmb));
+    addEventListener('resize', queueAmb);
+  }
+
+  /* ---------- L'entrée : la porte (assets/visite.js) appelle awEnter() quand elle s'ouvre ---------- */
   // une fois la carte arrivée, elle suit directement le défilement (sans transition qui la ralentirait)
   const startHero = () => { root.classList.add('hero-in'); dirty = true; setTimeout(() => { root.classList.add('hero-done'); dirty = true; }, 1800); };
-  const intro = $('.intro');
-  if (root.classList.contains('intro-on') && intro) {
-    const t0 = performance.now();
+  const entry = $('.entry');
+  if (root.classList.contains('intro-on') && entry) {
     let gone = false;
-    const lift = () => {
-      if (gone) return;
-      gone = true;
-      intro.classList.add('is-out');
-      setTimeout(startHero, 250);
-      setTimeout(() => { root.classList.remove('intro-on'); intro.remove(); }, 1150);
-      try { sessionStorage.setItem('aw-intro', '1'); } catch (_) { /* rien */ }
-    };
-    // au moins 2,1 s pour que l'animation se termine, au plus 4 s même si la vidéo tarde
-    const ready = () => setTimeout(lift, Math.max(0, 2100 - (performance.now() - t0)));
-    if (heroVideo && heroVideo._item) heroVideo.addEventListener('loadeddata', ready, { once: true });
-    else addEventListener('load', ready, { once: true });
-    setTimeout(lift, 4000);
+    window.awEnter = () => { if (gone) return; gone = true; startHero(); };
   } else {
-    if (intro) intro.remove();
+    if (entry) entry.remove();
     requestAnimationFrame(() => requestAnimationFrame(startHero));
   }
 
@@ -104,8 +109,9 @@
     else if (hdAcc > 24) hd.classList.add('is-hidden');
   };
   // la pastille suit le lien survolé, sinon la section en cours
-  const hdNav = $('.hd__nav', hd), hdPill = $('.hd__pill', hd), hdLinks = $$('.hd__nav a', hd);
-  const hdSections = hdLinks.map((l) => $(l.getAttribute('href')));
+  const hdNav = $('.hd__nav', hd), hdPill = $('.hd__pill', hd), hdLinks = $$('.hd__nav a, .hd__mega', hd);
+  // le bouton du méga-menu suit la section « Savoir-faire » ; les liens vers d'autres pages ne suivent rien
+  const hdSections = hdLinks.map((l) => { const h = l.getAttribute('href') || '#savoir-faire'; return h.startsWith('#') ? $(h) : null; });
   let hdActive = null, hdHover = null;
   const placePill = () => {
     const t = hdHover || hdActive;
@@ -242,8 +248,8 @@
   const measureHero = () => {
     mob = null;
     if (vw > 760) { heroStage.style.removeProperty('--bb'); heroZoom.style.width = heroZoom.style.height = heroZoom.style.margin = ''; return; }
-    const cover = Math.max(vw / 834, vh / 1112);
-    const cw = 834 * cover, ch = 1112 * cover;            // taille du film en plein écran
+    const cover = Math.max(vw / 960, vh / 960);
+    const cw = 960 * cover, ch = 960 * cover;            // taille du film en plein écran
     // le film garde sa taille entière (débordant de l'écran), pour qu'une fois réduit il tienne tout entier dans la fenêtre
     Object.assign(heroZoom.style, { width: `${cw}px`, height: `${ch}px`, margin: `${-ch / 2}px 0 0 ${-cw / 2}px` });
     const top = hdH() + 6, maxH = vh * .56;
@@ -264,7 +270,7 @@
       const s = lerp(mob.s0, 1, o);
       heroZoom.style.transform = `translate3d(0, ${(mob.dy * (1 - o)).toFixed(1)}px, 0) scale(${s.toFixed(4)})`;
       const L = mob.left * (1 - o), T = mob.top * (1 - o), B = (vh - mob.top - mob.bh) * (1 - o);
-      const arch = (mob.bw / 2) * (1 - o), base = 18 * (1 - o);
+      const arch = 18 * (1 - o), base = 18 * (1 - o);
       const edge = c * 4;
       heroBg.style.clipPath = `inset(${(T + c * vh * .04).toFixed(1)}px ${(L + c * vw * .04).toFixed(1)}px ${(B + c * vh * .04).toFixed(1)}px ${(L + c * vw * .04).toFixed(1)}px round ${(arch + c * 24).toFixed(1)}px ${(arch + c * 24).toFixed(1)}px ${(base + c * 24).toFixed(1)}px ${(base + c * 24).toFixed(1)}px)`;
       heroCard.style.transform = shown ? `translate3d(0, ${(60 * o).toFixed(1)}px, 0)` : '';
@@ -581,33 +587,6 @@
     });
     $$('.depth__bar .b-round').forEach((b) => b.addEventListener('click', () => commit(S.target + Number(b.dataset.dir))));
   }
-
-  /* ---------- Formulaire : validation, puis ouverture de la messagerie avec le message prêt ---------- */
-  const form = $('#form');
-  const status = $('#form-status');
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    let first = null;
-    $$('[required]', form).forEach((f) => {
-      const bad = !f.value.trim();
-      f.setAttribute('aria-invalid', String(bad));
-      if (bad && !first) first = f;
-    });
-    if (first) {
-      status.textContent = 'Merci de compléter les champs encadrés en rouge.';
-      status.classList.add('is-error');
-      first.focus();
-      return;
-    }
-    const d = Object.fromEntries(new FormData(form));
-    const body = `Nom : ${d.nom}\nContact : ${d.contact}\nType de projet : ${d.type}\n\n${d.message}`;
-    status.classList.remove('is-error');
-    status.textContent = 'Votre messagerie s\'ouvre avec le message prêt à envoyer. Merci !';
-    window.location.href = `mailto:contact@actwood.dz?subject=${encodeURIComponent(`Projet ${d.type} — ${d.nom}`)}&body=${encodeURIComponent(body)}`;
-  });
-  form.addEventListener('input', (e) => {
-    if (e.target.value && e.target.value.trim()) e.target.setAttribute('aria-invalid', 'false');
-  });
 
   const yr = $('#year');
   if (yr) yr.textContent = new Date().getFullYear();

@@ -1,5 +1,5 @@
 /* =========================================================
-   Act Wood — du bois brut à la pose
+   Nejera — du bois brut à la pose
    Noyer & lin · EB Garamond + Instrument Sans
    ========================================================= */
 
@@ -404,7 +404,7 @@ html:not(.motion) .hero__cue { display: none; }
   container-type: size; overflow: hidden;
 }
 .motion .tess__stage { position: sticky; top: var(--hd); }
-/* une grande arche, la signature d'Act Wood, derrière la photo */
+/* une grande arche, la signature de Nejera, derrière la photo */
 .tess__arch { position: absolute; left: 50%; top: 50%; height: 104cqh; width: auto; aspect-ratio: 300 / 420; transform: translate(-50%, -46%); color: var(--accent); opacity: .28; pointer-events: none; }
 
 .tess__list { position: relative; align-self: center; }
@@ -813,9 +813,9 @@ html:not(.motion) .band__card { opacity: 1; transform: none; }
 }
 
 .hero-done .hero__card { transition: none; }
-/* écran large : la vidéo est verticale, on cadre sur le plateau et le piétement */
+/* écran large : la vidéo est carrée, on cadre sur l'îlot et les suspensions */
 @media (min-width: 761px) {
-  .hero__bg img, .hero__bg video { object-position: 50% 70%; }
+  .hero__bg img, .hero__bg video { object-position: 50% 55%; }
   .hero__card { max-width: 540px; }
 }
 
@@ -850,4 +850,27 @@ html:not(.motion) .band__card { opacity: 1; transform: none; }
 }
 @media (max-width: 760px) and (max-height: 700px) {
   .motion .hero__card .kicker { display: none; }
+}
+
+/* ---------- Ouverture sur grand écran : le film reste à sa taille réelle, donc net ----------
+   Le film (carré, 960 px) n'est plus étiré sur toute la largeur : il occupe un grand panneau
+   à droite, à la hauteur de l'écran. Le reste du fond reprend ses couleurs, très floutées,
+   image après image (une « lumière d'ambiance » calculée sur un canevas de 40 px). */
+.hero__amb { display: none; }
+@media (min-width: 761px) {
+  .hero__bg { background: #2a2019; }
+  .hero__amb {
+    display: block; position: absolute; inset: -12%; width: 124%; height: 124%;
+    filter: blur(70px) saturate(1.15) brightness(.82); opacity: .95; pointer-events: none;
+  }
+  .hero__zoom {
+    left: auto; right: 0; width: min(100svh, 66vw);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%); mask-image: linear-gradient(90deg, transparent 0, #000 22%);
+  }
+  .hero__bg img, .hero__bg video { object-position: 50% 50%; }
+  .hero__shade {
+    background:
+      linear-gradient(90deg, rgb(42 32 25 / .3) 0%, rgb(42 32 25 / .06) 45%, rgb(42 32 25 / 0) 70%),
+      linear-gradient(180deg, rgb(20 12 6 / .38) 0%, rgb(20 12 6 / 0) 22%);
+  }
 }
