@@ -1,5 +1,5 @@
 /* Nejera wa Tasmim El Khacheb — la visite : l'entrée par la porte, la visite guidée d'étape en étape,
-   et la musique du patrimoine (oud et darbouka joués en direct, sans fichier audio). */
+   et la musique du patrimoine (un orchestre hawzi joué en direct, sans fichier audio). */
 (() => {
   const root = document.documentElement;
   const motion = root.classList.contains('motion');
@@ -13,23 +13,36 @@
   const arrowR = '<svg viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
 
   /* =========================================================
-     La musique : un oud (cordes pincées, synthèse Karplus-Strong) en maqâm hijaz sur ré,
-     une darbouka au rythme maqsûm, un bourdon grave. Tout est calculé dans le navigateur.
+     La musique : un petit orchestre hawzi (Tlemcen), calculé dans le navigateur.
+     Mode zidane sur ré. La kamenja (violon tenu sur le genou) chante la mélodie en glissant
+     d'une note à l'autre ; le mandole, cordes doublées, la double en l'ornant de trémolos ;
+     la derbouka et le tar tiennent le rythme berouali (six croches, vif et dansant).
      ========================================================= */
   const Music = (() => {
-    let ctx = null, master, dry, wet, analyser, data, timer = 0, next = 0, step = 0, playing = false, notes = [], deg = 4;
+    let ctx = null, master, dry, wet, analyser, data, timer = 0, next = 0, step = 0, playing = false, notes = [];
     let level = 0, turn = 0, raf = 0, target = .45, fast = 0, slow = 0;
-    const BPM = 96, EIGHTH = 60 / BPM / 2;
-    // hijaz sur ré : ré mi♭ fa♯ sol la si♭ do ré…
+    let vio = null, phrase = [], pIdx = 0, pLeft = 0, pCount = 0;
+    const EIGHTH = .19;
+    // zidane sur ré : ré mi♭ fa♯ sol la si♭ do ré mi♭ fa♯ sol la
     const HZ = [146.83, 155.56, 185.0, 196.0, 220.0, 233.08, 261.63, 293.66, 311.13, 369.99, 392.0, 440.0];
-    const RHYTHM = ['D', 'T', 0, 'T', 'D', 0, 'T', 0];
+    // berouali : D = doum (derbouka), T = tek, B = coup grave du tar, 0 = silence
+    const RHYTHM = ['D', 0, 'T', 'B', 'T', 'T'];
+    // les phrases : [degré, durée en croches] ; chaque phrase dure deux mesures et retombe sur ré
+    const PHRASES = [
+      [[4, 1], [4, 1], [5, 1], [6, 1], [7, 2], [6, 1], [5, 1], [4, 1], [3, 1], [4, 2]],
+      [[7, 3], [6, 1], [5, 1], [4, 1], [5, 2], [4, 1], [3, 1], [4, 2]],
+      [[4, 2], [5, 1], [4, 1], [3, 1], [2, 1], [3, 2], [2, 1], [1, 1], [0, 2]],
+      [[2, 1], [3, 1], [4, 2], [3, 1], [2, 1], [1, 2], [2, 1], [1, 1], [0, 2]],
+      [[0, 1], [2, 1], [3, 1], [4, 3], [5, 1], [4, 1], [3, 2], [2, 2]],
+      [[4, 1], [3, 1], [2, 1], [3, 1], [2, 1], [1, 1], [0, 6]],
+    ];
+    const ORDER = [0, 1, 2, 3, 0, 1, 4, 5];
     const pluckBuffer = (f) => {
-      const sr = ctx.sampleRate, N = Math.round(sr / f), L = Math.floor(sr * 1.8);
+      const sr = ctx.sampleRate, N = Math.round(sr / f), L = Math.floor(sr * 1.4);
       const buf = ctx.createBuffer(1, L, sr), y = buf.getChannelData(0);
       for (let i = 0; i < N; i++) y[i] = Math.random() * 2 - 1;
-      for (let i = 1; i < N; i++) y[i] = (y[i] + y[i - 1]) * .5; // attaque un peu adoucie, comme une plume
-      y[N] = y[0] * .997;
-      for (let i = N + 1; i < L; i++) y[i] = .4985 * (y[i - N] + y[i - N - 1]);
+      y[N] = y[0] * .996;
+      for (let i = N + 1; i < L; i++) y[i] = .498 * (y[i - N] + y[i - N - 1]); // corde métallique : brillante, plus courte
       return buf;
     };
     const noiseBuffer = () => {
@@ -38,72 +51,97 @@
       return b;
     };
     const reverb = () => {
-      const sr = ctx.sampleRate, L = sr * 2.6, ir = ctx.createBuffer(2, L, sr);
-      for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < L; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / L, 3.2); }
+      const sr = ctx.sampleRate, L = sr * 2.2, ir = ctx.createBuffer(2, L, sr);
+      for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < L; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / L, 3.4); }
       const cv = ctx.createConvolver(); cv.buffer = ir; return cv;
     };
     let noise;
+    // la kamenja : une seule voix d'archet qui glisse, avec un vibrato qui s'installe sur les notes tenues
+    const makeViolin = () => {
+      const o1 = ctx.createOscillator(), o2 = ctx.createOscillator(), mix = ctx.createGain();
+      o1.type = 'sawtooth'; o2.type = 'sawtooth'; o2.detune.value = 7;
+      const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2300; lp.Q.value = .8;
+      const body = ctx.createBiquadFilter(); body.type = 'peaking'; body.frequency.value = 1100; body.gain.value = 6; body.Q.value = 1.2;
+      const g = ctx.createGain(); g.gain.value = 0;
+      const vib = ctx.createOscillator(), vg = ctx.createGain(); vib.frequency.value = 5.6; vg.gain.value = 0;
+      vib.connect(vg); vg.connect(o1.frequency); vg.connect(o2.frequency);
+      o1.connect(mix); o2.connect(mix); mix.connect(body); body.connect(lp); lp.connect(g); g.connect(dry); g.connect(wet);
+      o1.start(); o2.start(); vib.start();
+      return { o1, o2, g, vg };
+    };
     const init = () => {
       ctx = new (window.AudioContext || window.webkitAudioContext)();
       master = ctx.createGain(); master.gain.value = 0;
       analyser = ctx.createAnalyser(); analyser.fftSize = 256; data = new Uint8Array(analyser.fftSize);
       dry = ctx.createGain(); dry.gain.value = .9;
-      wet = ctx.createGain(); wet.gain.value = .32;
+      wet = ctx.createGain(); wet.gain.value = .28;
       const rv = reverb();
       dry.connect(master); wet.connect(rv); rv.connect(master);
       master.connect(analyser); analyser.connect(ctx.destination);
       notes = HZ.map(pluckBuffer);
       noise = noiseBuffer();
-      // le bourdon : ré et la graves, filtrés, qui respirent lentement
-      [73.42, 110].forEach((f, k) => {
-        const o = ctx.createOscillator(), fl = ctx.createBiquadFilter(), g = ctx.createGain(), lfo = ctx.createOscillator(), lg = ctx.createGain();
-        o.type = 'sawtooth'; o.frequency.value = f; o.detune.value = k ? 4 : -3;
-        fl.type = 'lowpass'; fl.frequency.value = 380; fl.Q.value = .6;
-        g.gain.value = .035;
-        lfo.frequency.value = .07 + k * .03; lg.gain.value = 140; lfo.connect(lg); lg.connect(fl.frequency);
-        o.connect(fl); fl.connect(g); g.connect(dry); g.connect(wet);
-        o.start(); lfo.start();
-      });
+      vio = makeViolin();
+      // un bourdon très discret sur ré
+      const o = ctx.createOscillator(), fl = ctx.createBiquadFilter(), g = ctx.createGain();
+      o.type = 'triangle'; o.frequency.value = 73.42; fl.type = 'lowpass'; fl.frequency.value = 300; g.gain.value = .05;
+      o.connect(fl); fl.connect(g); g.connect(dry); o.start();
     };
-    const pluck = (i, t, vel = .5) => {
-      const s = ctx.createBufferSource(); s.buffer = notes[Math.max(0, Math.min(notes.length - 1, i))];
-      const body = ctx.createBiquadFilter(); body.type = 'peaking'; body.frequency.value = 320; body.gain.value = 5; body.Q.value = 1;
-      const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2600;
-      const g = ctx.createGain(); g.gain.setValueAtTime(vel, t); g.gain.exponentialRampToValueAtTime(.001, t + 1.7);
-      s.connect(body); body.connect(lp); lp.connect(g); g.connect(dry); g.connect(wet);
-      s.start(t); s.stop(t + 1.8);
+    // le mandole : chaque note pincée sur deux cordes accordées presque pareil
+    const pluck = (i, t, vel = .4) => {
+      const b = notes[Math.max(0, Math.min(notes.length - 1, i))];
+      const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 4200;
+      const g = ctx.createGain(); g.gain.setValueAtTime(vel, t); g.gain.exponentialRampToValueAtTime(.001, t + 1.2);
+      lp.connect(g); g.connect(dry); g.connect(wet);
+      [1, 1.0035].forEach((r, k) => { const s = ctx.createBufferSource(); s.buffer = b; s.playbackRate.value = r; s.connect(lp); s.start(t + k * .006); s.stop(t + 1.3); });
     };
+    const bow = (i, t, len) => {
+      const f = HZ[Math.max(0, Math.min(HZ.length - 1, i))] * 2;
+      [vio.o1.frequency, vio.o2.frequency].forEach((p) => p.setTargetAtTime(f, t, .035)); // le glissé entre deux notes
+      vio.g.gain.setTargetAtTime(.075, t, .04);
+      vio.vg.gain.cancelScheduledValues(t);
+      vio.vg.gain.setValueAtTime(0, t);
+      if (len >= 2) vio.vg.gain.linearRampToValueAtTime(f * .012, t + len * EIGHTH * .8);
+    };
+    const breathe = (t) => { vio.g.gain.setTargetAtTime(.012, t, .05); };
     const drum = (type, t) => {
-      if (type === 'D') { // doum : le grave, au centre de la peau
+      if (type === 'D' || type === 'B') {
         const o = ctx.createOscillator(), g = ctx.createGain();
-        o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(58, t + .2);
-        g.gain.setValueAtTime(.75, t); g.gain.exponentialRampToValueAtTime(.001, t + .45);
-        o.connect(g); g.connect(dry); o.start(t); o.stop(t + .5);
+        const f0 = type === 'D' ? 160 : 95;
+        o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f0 * .4, t + .18);
+        g.gain.setValueAtTime(type === 'D' ? .7 : .45, t); g.gain.exponentialRampToValueAtTime(.001, t + (type === 'D' ? .4 : .55));
+        o.connect(g); g.connect(dry); o.start(t); o.stop(t + .6);
       }
       const n = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
       n.buffer = noise;
-      f.type = 'bandpass'; f.frequency.value = type === 'D' ? 900 : type === 'T' ? 3600 : 2200; f.Q.value = 1.4;
-      const v = type === 'D' ? .12 : type === 'T' ? .32 : .16;
-      g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.001, t + (type === 'D' ? .12 : .07));
-      n.connect(f); f.connect(g); g.connect(dry); g.connect(wet); n.start(t); n.stop(t + .15);
+      f.type = 'bandpass'; f.frequency.value = type === 'T' ? 3800 : type === 'K' ? 2400 : 700; f.Q.value = 1.4;
+      const v = type === 'T' ? .3 : type === 'K' ? .14 : .1;
+      g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.001, t + (type === 'T' || type === 'K' ? .06 : .14));
+      n.connect(f); f.connect(g); g.connect(dry); g.connect(wet); n.start(t); n.stop(t + .16);
     };
-    // la mélodie : une marche dans le maqâm, qui revient sur ré à chaque fin de phrase
-    const melody = (t, s) => {
-      const bar = Math.floor(s / 8) % 4, pos = s % 8;
-      if (bar === 3 && pos >= 4) { if (pos === 4) pluck(bar % 2 ? 0 : 7, t, .55); return; }
-      if (Math.random() < (pos % 2 ? .38 : .62)) {
-        const leap = Math.random() < .2 ? (Math.random() < .5 ? -2 : 2) : (Math.random() < .5 ? -1 : 1);
-        deg = Math.max(0, Math.min(HZ.length - 1, deg + leap));
-        if (Math.random() < .12) { for (let k = 0; k < 3; k++) pluck(deg, t + k * EIGHTH / 3, .3); } // trémolo
-        else pluck(deg, t, pos === 0 ? .55 : .38);
+    // à chaque croche : la note suivante de la phrase, jouée ensemble par la kamenja et le mandole
+    const melody = (t) => {
+      if (pLeft > 0) {
+        pLeft--;
+        const [d] = phrase[pIdx - 1];
+        if (Math.random() < .45) pluck(d, t, .2); // trémolo du mandole sur les notes tenues
+        return;
       }
+      if (pIdx >= phrase.length) {
+        phrase = PHRASES[ORDER[pCount % ORDER.length]]; pIdx = 0; pCount++;
+      }
+      const [d, len] = phrase[pIdx++];
+      pLeft = len - 1;
+      bow(d, t, len);
+      pluck(d, t, .42);
+      if (Math.random() < .18) pluck(Math.min(HZ.length - 1, d + 1), t - .045, .16); // petite appoggiature
+      if (pIdx >= phrase.length) breathe(t + len * EIGHTH * .85);
     };
     const schedule = () => {
       while (next < ctx.currentTime + .15) {
-        const d = RHYTHM[step % 8];
+        const d = RHYTHM[step % 6];
         if (d) drum(d, next);
-        else if (Math.random() < .3) drum('K', next);
-        melody(next, step);
+        else if (Math.random() < .35) drum('K', next);
+        melody(next);
         next += EIGHTH; step++;
       }
     };
@@ -195,7 +233,7 @@
     claustras: [{ u: 'index.html#cnc', t: 'La lumière découpée', h: 'Faites défiler : le panneau se découpe sous vos yeux.' }, { u: 'claustras.html', t: 'Claustras et CNC', h: 'Lames, moucharabiehs, arabesques.' }],
     mobilier: [{ u: 'mobilier.html', t: 'Le mobilier', h: 'Tables, buffets, assises, et le jardin en bois exotique.' }],
     parquet: [{ u: 'parquet.html', t: 'Le parquet', h: 'Lames larges, point de Hongrie, finitions.' }],
-    patrimoine: [{ u: 'index.html#patrimoine', t: 'Le patrimoine, en musique', h: 'Montez le son : oud et darbouka accompagnent la section.', sound: true }, { u: 'inspirations.html', t: 'Inspirations mauresques', h: 'Bois sculpté, arcs, faïence : tout cela se fabrique.' }],
+    patrimoine: [{ u: 'index.html#patrimoine', t: 'Le patrimoine, en musique', h: 'Montez le son : un air hawzi accompagne la section.', sound: true }, { u: 'inspirations.html', t: 'Inspirations mauresques', h: 'Bois sculpté, arcs, faïence : tout cela se fabrique.' }],
     fin: [{ u: 'index.html#contact', t: 'Votre rendez-vous', h: 'Nous venons mesurer et vous conseiller, sans engagement.' }],
   };
   const ORDER = ['portes', 'cuisines', 'chambres', 'agencement', 'claustras', 'mobilier', 'parquet', 'patrimoine'];

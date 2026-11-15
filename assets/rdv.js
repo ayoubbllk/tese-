@@ -10,9 +10,9 @@
   const steps = $$('.rdv__step'), tabs = $$('.rdv__steps button');
   const next = $('.rdv__next'), back = $('.rdv__back'), err = $('.rdv__err'), done = $('.rdv__done');
   const advice = $('.rdv__advice'), woods = $$('.wood');
-  // numéro WhatsApp de l'atelier : à remplacer par le vrai numéro (format international, sans +)
-  const WHATSAPP = '213000000000';
-  const MAIL = 'contact@nejera.dz';
+  // numéro WhatsApp de l'atelier (format international, sans +)
+  const WHATSAPP = '213778577790';
+  const MAIL = 'Abel95b@yahoo.fr';
   let cur = 0, reached = 0;
 
   const vals = (name) => $$(`[name="${name}"]:checked`).map((i) => i.value);

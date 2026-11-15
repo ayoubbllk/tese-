@@ -185,7 +185,7 @@ export const menuHTML = (base = '') => `<div class="hd__menu" id="hd-menu">
 ${pages.filter((p) => !p.inspiration).map((p) => `        <li><a href="${p.slug}.html">${p.menu}</a></li>`).join('\n')}
       </ul>
       <a class="b-glow hd__menu-cta" href="${base}#contact"><span>Parler de votre projet</span></a>
-      <p class="hd__menu-foot">Atelier à Alger · sur rendez-vous<br><a href="mailto:contact@nejera.dz">contact@nejera.dz</a></p>
+      <p class="hd__menu-foot">Atelier à Alger · sur rendez-vous<br><a href="mailto:Abel95b@yahoo.fr">Abel95b@yahoo.fr</a></p>
     </nav>
   </div>`;
 
